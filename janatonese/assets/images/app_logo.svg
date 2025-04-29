@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="120" height="120" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background Circle -->
+  <circle cx="60" cy="60" r="58" fill="#009688" />
+  <circle cx="60" cy="60" r="52" fill="#00796b" />
+  
+  <!-- Message Bubbles -->
+  <path d="M30 45 L75 45 C80 45, 85 50, 85 55 L85 70 C85 75, 80 80, 75 80 L55 80 L45 90 L45 80 L30 80 C25 80, 20 75, 20 70 L20 55 C20 50, 25 45, 30 45 Z" fill="white" opacity="0.9" />
+  
+  <!-- Numbers in the Message -->
+  <text x="52" y="59" font-family="Arial" font-size="14" font-weight="bold" text-anchor="middle" fill="#00796b">392</text>
+  <text x="52" y="74" font-family="Arial" font-size="14" font-weight="bold" text-anchor="middle" fill="#00796b">718</text>
+  
+  <!-- Lock Icon -->
+  <circle cx="78" cy="62" r="13" fill="#e0f2f1" />
+  <rect x="73" y="55" width="10" height="13" rx="2" fill="#00796b" />
+  <rect x="75" y="55" width="6" height="2" fill="#e0f2f1" />
+  <circle cx="78" cy="62" r="2" fill="#e0f2f1" />
+  <rect x="77" y="62" width="2" height="4" fill="#e0f2f1" />
+  
+  <!-- Letter "J" Watermark -->
+  <text x="48" y="75" font-family="Arial" font-size="60" font-weight="bold" text-anchor="middle" fill="#004d40" opacity="0.2">J</text>
+</svg>

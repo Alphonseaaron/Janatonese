@@ -1,0 +1,99 @@
+// Firestore Rules
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // User profiles
+    match /users/{userId} {
+      allow read: if request.auth != null;
+      allow create: if request.auth != null && request.auth.uid == userId;
+      allow update: if request.auth != null && request.auth.uid == userId;
+      allow delete: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // Contacts (each user's contacts)
+    match /contacts/{contactId} {
+      allow read: if request.auth != null && resource.data.userId == request.auth.uid;
+      allow create: if request.auth != null && request.resource.data.userId == request.auth.uid;
+      allow update: if request.auth != null && resource.data.userId == request.auth.uid;
+      allow delete: if request.auth != null && resource.data.userId == request.auth.uid;
+    }
+    
+    // Chats
+    match /chats/{chatId} {
+      allow read: if request.auth != null && (
+        resource.data.participant1 == request.auth.uid || 
+        resource.data.participant2 == request.auth.uid
+      );
+      allow create: if request.auth != null && (
+        request.resource.data.participant1 == request.auth.uid || 
+        request.resource.data.participant2 == request.auth.uid
+      );
+      allow update: if request.auth != null && (
+        resource.data.participant1 == request.auth.uid || 
+        resource.data.participant2 == request.auth.uid
+      );
+      allow delete: if false;  // Don't allow chat deletions, only archiving
+    }
+    
+    // Messages in chats
+    match /chats/{chatId}/messages/{messageId} {
+      allow read: if request.auth != null && (
+        get(/databases/$(database)/documents/chats/$(chatId)).data.participant1 == request.auth.uid || 
+        get(/databases/$(database)/documents/chats/$(chatId)).data.participant2 == request.auth.uid
+      );
+      allow create: if request.auth != null && (
+        get(/databases/$(database)/documents/chats/$(chatId)).data.participant1 == request.auth.uid || 
+        get(/databases/$(database)/documents/chats/$(chatId)).data.participant2 == request.auth.uid
+      ) && request.resource.data.senderId == request.auth.uid;
+      allow update: if false;  // Don't allow editing messages after sending
+      allow delete: if request.auth != null && resource.data.senderId == request.auth.uid && 
+                    resource.data.timestamp.toMillis() > (request.time.toMillis() - 5 * 60 * 1000); // Allow deletion only within 5 minutes of sending
+    }
+  }
+}
+
+// Firebase Storage Rules
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    // Profile pictures
+    match /profiles/{userId}/{fileName} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // Chat attachments
+    match /chats/{chatId}/{fileName} {
+      allow read: if request.auth != null && (
+        exists(/databases/$(database)/documents/chats/$(chatId)) &&
+        (
+          get(/databases/$(database)/documents/chats/$(chatId)).data.participant1 == request.auth.uid || 
+          get(/databases/$(database)/documents/chats/$(chatId)).data.participant2 == request.auth.uid
+        )
+      );
+      allow write: if request.auth != null && (
+        exists(/databases/$(database)/documents/chats/$(chatId)) &&
+        (
+          get(/databases/$(database)/documents/chats/$(chatId)).data.participant1 == request.auth.uid || 
+          get(/databases/$(database)/documents/chats/$(chatId)).data.participant2 == request.auth.uid
+        )
+      ) && request.resource.size < 10 * 1024 * 1024; // Limit file size to 10MB
+    }
+  }
+}
+
+// Firestore Indexes
+// Add these indexes in Firebase Console:
+
+// Collection: chats
+// Fields to index:
+// - participant1 (Ascending) + lastMessageTimestamp (Descending)
+// - participant2 (Ascending) + lastMessageTimestamp (Descending)
+// 
+// Collection: chats/chatId/messages
+// Fields to index:
+// - timestamp (Ascending)
+// 
+// Collection: contacts
+// Fields to index:
+// - userId (Ascending) + displayName (Ascending)
