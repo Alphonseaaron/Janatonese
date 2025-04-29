@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="240" height="240" viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background Circle -->
+  <circle cx="120" cy="120" r="110" fill="#e0f2f1" stroke="#009688" stroke-width="2"/>
+  
+  <!-- Left Person -->
+  <circle cx="70" cy="80" r="20" fill="#009688"/>
+  <circle cx="70" cy="70" r="8" fill="#ffffff"/>
+  <path d="M55 100 Q 70 110, 85 100" fill="#009688"/>
+  
+  <!-- Right Person -->
+  <circle cx="170" cy="80" r="20" fill="#009688"/>
+  <circle cx="170" cy="70" r="8" fill="#ffffff"/>
+  <path d="M155 100 Q 170 110, 185 100" fill="#009688"/>
+  
+  <!-- Message Bubbles -->
+  <rect x="40" y="120" width="60" height="30" rx="15" fill="#ffffff" stroke="#009688" stroke-width="2"/>
+  <text x="70" y="140" font-family="Arial" font-size="10" text-anchor="middle" fill="#333333">123 456</text>
+  
+  <rect x="140" y="150" width="60" height="30" rx="15" fill="#ffffff" stroke="#009688" stroke-width="2"/>
+  <text x="170" y="170" font-family="Arial" font-size="10" text-anchor="middle" fill="#333333">789 012</text>
+  
+  <!-- Lock Icons -->
+  <g transform="translate(90, 130) scale(0.7)">
+    <circle cx="0" cy="0" r="10" fill="#ff5722"/>
+    <rect x="-3.5" y="-6" width="7" height="9" rx="1" fill="#ffffff"/>
+    <rect x="-2.5" y="-6" width="5" height="1" rx="0.5" fill="#ff5722"/>
+    <rect x="-1.5" y="-4" width="3" height="5" rx="0.5" fill="#ff5722"/>
+  </g>
+  
+  <g transform="translate(190, 160) scale(0.7)">
+    <circle cx="0" cy="0" r="10" fill="#ff5722"/>
+    <rect x="-3.5" y="-6" width="7" height="9" rx="1" fill="#ffffff"/>
+    <rect x="-2.5" y="-6" width="5" height="1" rx="0.5" fill="#ff5722"/>
+    <rect x="-1.5" y="-4" width="3" height="5" rx="0.5" fill="#ff5722"/>
+  </g>
+  
+  <!-- Connection Line -->
+  <path d="M85 100 C 120 120, 120 140, 155 160" fill="none" stroke="#009688" stroke-width="2" stroke-dasharray="5 3" class="connection-line"/>
+  
+  <!-- Animation Elements - Flying Numbers -->
+  <g class="flying-numbers1">
+    <text x="100" y="120" font-family="Arial" font-size="10" fill="#ff5722">392</text>
+  </g>
+  
+  <g class="flying-numbers2">
+    <text x="130" y="140" font-family="Arial" font-size="10" fill="#ff5722">718</text>
+  </g>
+  
+  <style>
+    @keyframes dash {
+      to {
+        stroke-dashoffset: 20;
+      }
+    }
+    
+    .connection-line {
+      animation: dash 2s linear infinite;
+      stroke-dashoffset: 0;
+    }
+    
+    @keyframes fly1 {
+      0% { transform: translate(0, 0); opacity: 0; }
+      50% { opacity: 1; }
+      100% { transform: translate(20px, 20px); opacity: 0; }
+    }
+    
+    @keyframes fly2 {
+      0% { transform: translate(0, 0); opacity: 0; }
+      50% { opacity: 1; }
+      100% { transform: translate(25px, 15px); opacity: 0; }
+    }
+    
+    .flying-numbers1 {
+      animation: fly1 3s infinite;
+    }
+    
+    .flying-numbers2 {
+      animation: fly2 3s infinite;
+      animation-delay: 1.5s;
+    }
+  </style>
+</svg>
