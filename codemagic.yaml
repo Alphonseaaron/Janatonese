@@ -50,14 +50,5 @@ workflows:
         notify:
           success: true
           failure: true
-      github_releases:
-        token: $GITHUB_TOKEN
-        tag: "v$(date +'%Y%m%d%H%M%S')"
-        name: "Build $(date +'%Y-%m-%d %H:%M:%S')"
-        draft: false
-        prerelease: false
-        files:
-          - build/app/outputs/flutter-apk/app-release.apk
-          - build/ios/ipa/*.ipa
-
+      
     
