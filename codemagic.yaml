@@ -60,12 +60,4 @@ workflows:
           - build/app/outputs/flutter-apk/app-release.apk
           - build/ios/ipa/*.ipa
 
-    post-build:
-      scripts:
-        - name: Rollback on Failure
-          condition: failed()
-          script: |
-            git config --global user.name "codemagic-bot"
-            git config --global user.email "bot@example.com"
-            git revert HEAD --no-edit
-            git push https://$GITHUB_TOKEN@github.com/Alphonseaaron/Janatonese.git HEAD:main
+    
